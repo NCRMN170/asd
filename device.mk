@@ -25,9 +25,7 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGES += bootctrl
 
-PRODUCT_PACKAGES += \
-    create_pl_dev \
-    create_pl_dev.recovery
+PRODUCT_PACKAGES += mtk_plpath_utils
 
 # Update Engine & Update Verifier 
 PRODUCT_PACKAGES += \
