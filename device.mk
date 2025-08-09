@@ -25,8 +25,6 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGES += bootctrl
 
-PRODUCT_PACKAGES += mtk_plpath_utils
-
 # Update Engine & Update Verifier 
 PRODUCT_PACKAGES += \
     update_engine \
