@@ -61,29 +61,33 @@ BOARD_KERNEL_BASE := 0x40078000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_RAMDISK_OFFSET := 0x11088000
 BOARD_KERNEL_TAGS_OFFSET := 0x07c08000
-BOARD_KERNEL_IMAGE_NAME := kernel
-# Include DTB and pass via mkbootimg args
+BOARD_KERNEL_IMAGE_NAME := Image.gz
+
+# DTB yapılandırması
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 
-# Kernel cmdline — add slot+hardware for A/B and MTK
+# Kernel cmdline
 BOARD_KERNEL_CMDLINE := \
     bootopt=64S3,32N2,64N2 \
     androidboot.selinux=permissive \
-    androidboot.slot_suffix=$(SLOT_SUFFIX) \
+    androidboot.slot_suffix=_$(SLOT_SUFFIX) \
     androidboot.hardware=mt8797
 
+# mkbootimg args
 BOARD_MKBOOTIMG_ARGS += \
     --header_version $(BOARD_BOOTIMG_HEADER_VERSION) \
     --ramdisk_offset $(BOARD_RAMDISK_OFFSET) \
-    --tags_offset $(BOARD_KERNEL_TAGS_OFFSET) \
+    --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)\
     --dtb $(TARGET_PREBUILT_DTB)
 
-# Copy dtb.img to product output (fix ninja error)
+# DTB kopyalama kuralı
 INSTALLED_DTBIMAGE_TARGET := $(PRODUCT_OUT)/dtb.img
 $(INSTALLED_DTBIMAGE_TARGET): $(TARGET_PREBUILT_DTB)
 	$(copy-file-to-target)
+
+# PRODUCT_COPY_FILES için doğru yol
 PRODUCT_COPY_FILES += \
-    $(TARGET_PREBUILT_DTB):$(INSTALLED_DTBIMAGE_TARGET)
+    $(TARGET_PREBUILT_DTB):dtb.img
 
 # File systems
 BOARD_HAS_LARGE_FILESYSTEM := true
