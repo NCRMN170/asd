@@ -24,7 +24,6 @@ TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-2a-dotprod
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 :=
-# Use actual CPU micro-arch from getprop
 TARGET_CPU_VARIANT := cortex-a55
 TARGET_CPU_VARIANT_RUNTIME := cortex-a55
 
@@ -46,7 +45,7 @@ TARGET_USES_UEFI := true
 # Display
 TARGET_SCREEN_DENSITY := 320
 
-# Platform / security (align with vendor getprop)
+# Platform / security
 TARGET_BOARD_PLATFORM := mt6893
 PLATFORM_SECURITY_PATCH := 2099-12-31
 PLATFORM_VERSION := 99.87.36
@@ -62,8 +61,6 @@ BOARD_KERNEL_PAGESIZE := 2048
 BOARD_RAMDISK_OFFSET := 0x11088000
 BOARD_KERNEL_TAGS_OFFSET := 0x07c08000
 BOARD_KERNEL_IMAGE_NAME := Image.gz
-
-# DTB yapılandırması
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 
 # Kernel cmdline
@@ -80,14 +77,9 @@ BOARD_MKBOOTIMG_ARGS += \
     --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)\
     --dtb $(TARGET_PREBUILT_DTB)
 
-# DTB kopyalama kuralı
 INSTALLED_DTBIMAGE_TARGET := $(PRODUCT_OUT)/dtb.img
 $(INSTALLED_DTBIMAGE_TARGET): $(TARGET_PREBUILT_DTB)
 	$(copy-file-to-target)
-
-# PRODUCT_COPY_FILES için doğru yol
-PRODUCT_COPY_FILES += \
-    $(TARGET_PREBUILT_DTB):dtb.img
 
 # File systems
 BOARD_HAS_LARGE_FILESYSTEM := true
@@ -99,13 +91,13 @@ BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
 
-# Partition sizes (from user config)
+# Partition sizes
 BOARD_FLASH_BLOCK_SIZE := 131072
 BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 67108864
 BOARD_SUPER_PARTITION_SIZE := 9126805504
 
-# Dynamic partitions (matches getprop partitions)
+# Dynamic partitions
 BOARD_SUPER_PARTITION_GROUPS := mtk_dynamic_partitions
 BOARD_MTK_DYNAMIC_PARTITIONS_SIZE := 9122611200
 BOARD_MTK_DYNAMIC_PARTITIONS_PARTITION_LIST := \
@@ -114,7 +106,7 @@ BOARD_MTK_DYNAMIC_PARTITIONS_PARTITION_LIST := \
     vendor \
     product
 
-# Copy-out roots (workaround for ramdisk copy)
+# Copy-out roots
 TARGET_COPY_OUT_VENDOR := vendor
 TARGET_COPY_OUT_PRODUCT := product
 TARGET_COPY_OUT_SYSTEM_EXT := system_ext
@@ -166,7 +158,7 @@ TW_INCLUDE_NTFS_3G := true
 TW_INCLUDE_FUSE_EXFAT := true
 TW_INCLUDE_FUSE_NTFS := true
 
-# Props (dedupe)
+# Props
 TARGET_SYSTEM_PROP := $(DEVICE_PATH)/system.prop
 
 # Crypto (Android 14 / FBE)
@@ -178,7 +170,6 @@ TW_USE_FSCRYPT_POLICY := 1
 
 # Android Verified Boot (AVB 1.2)
 BOARD_AVB_ENABLE := true
-# Relax verify for chained vbmeta images
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 2
 
 # vbmeta_system (system + product)
