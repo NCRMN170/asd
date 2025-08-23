@@ -1,11 +1,31 @@
-# <src>                                             <mnt_point>          <type>          <mnt_flags and options>                                                                                                               <fs_mgr_flags>
+# Android Recovery fstab for Lenovo P11 Pro Gen 2 (TB132FU)
+# This file ensures proper mounting during recovery operations.
 
-system                                              /system              ext4            ro wait,slotselect,logical
-system_ext                                          /system_ext           ext4            ro wait,slotselect,logical
-vendor                                              /vendor              ext4            ro wait,slotselect,logical                                                                                                            wait,slotselect,avb,logical,first_stage_mount
-product                                             /product             ext4            ro wait,slotselect,logical                                                                                                            wait,slotselect,avb,logical,first_stage_mount
+# <device>                            <mount_point>    <type>   <mnt_flags>         <fs_mgr_flags>
 
-/dev/block/platform/bootdevice/by-name/userdata     /data                f2fs            noatime,nosuid,nodev,discard,noflush_merge,reserve_root=134217,resgid=1065,inlinecrypt,checkpoint_merge,fsync_mode=nobarrier          wait,check,formattable,quota,latemount,resize,reservedsize=128m,checkpoint=fs,fileencryption=aes-256-xts:aes-256-cts:v2,keydirectory=/metadata/vold/metadata_encryption
-/dev/block/platform/bootdevice/by-name/metadata     /metadata            ext4            noatime,nosuid,nodev,discard wait,check,formattable
-/dev/block/platform/bootdevice/by-name/misc         /misc                emmc            defaults       defaults
-/dev/block/platform/bootdevice/by-name/boot         /boot                emmc            defaults       slotselect
+# Boot and recovery partitions
+/dev/block/by-name/boot_a             /boot            emmc     defaults            slotselect
+/dev/block/by-name/boot_b             /boot            emmc     defaults            slotselect
+/dev/block/by-name/vendor_boot_a      /vendor_boot     emmc     defaults            slotselect
+/dev/block/by-name/vendor_boot_b      /vendor_boot     emmc     defaults            slotselect
+
+# System as root (dynamic partition)
+/dev/block/mapper/system              /system          ext4     ro,barrier=1        logical,first_stage_mount,slotselect
+/dev/block/mapper/vendor              /vendor          ext4     ro,barrier=1        logical,first_stage_mount,slotselect
+/dev/block/mapper/product             /product         ext4     ro,barrier=1        logical,first_stage_mount,slotselect
+
+# Metadata (encryption support)
+/dev/block/by-name/metadata           /metadata        ext4     noatime,nosuid,nodev,discard wait,check,formattable,quota,reservedsize=128M
+
+# Data (internal storage)
+/dev/block/mapper/userdata            /data            f2fs     noatime,nosuid,nodev,discard wait,check,quota,formattable,reservedsize=128M,resize,encryptable=footer
+
+# Cache (if present)
+/dev/block/by-name/misc               /cache           ext4     noatime,nosuid,nodev,discard wait,check,formattable
+
+# Persist
+/dev/block/by-name/persist            /persist         ext4     noatime,nosuid,nodev wait,check,formattable
+
+# External storage
+/devices/platform/11230000.usb3/xhci-hcd*    auto       vfat     defaults            voldmanaged=usb:auto
+/devices/platform/soc/11270000.mmc*          auto       vfat     defaults            voldmanaged=sdcard:auto
