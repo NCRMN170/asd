@@ -78,6 +78,13 @@ BOARD_MKBOOTIMG_ARGS += \
     --tags_offset $(BOARD_KERNEL_TAGS_OFFSET) \
     --dtb $(TARGET_PREBUILT_DTB)
 
+# Copy dtb.img to product output (fix ninja error)
+INSTALLED_DTBIMAGE_TARGET := $(PRODUCT_OUT)/dtb.img
+$(INSTALLED_DTBIMAGE_TARGET): $(TARGET_PREBUILT_DTB)
+	$(copy-file-to-target)
+PRODUCT_COPY_FILES += \
+    $(TARGET_PREBUILT_DTB):dtb.img
+
 # File systems
 BOARD_HAS_LARGE_FILESYSTEM := true
 TARGET_USERIMAGES_USE_EXT4 := true
