@@ -63,6 +63,12 @@ BOARD_KERNEL_TAGS_OFFSET := 0x07c08000
 BOARD_KERNEL_IMAGE_NAME := kernel
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 
+
+# DTB’yi build çıktısına kopyalamak için Soong kuralı
+PRODUCT_COPY_FILES += \
+    $(TARGET_PREBUILT_DTB):dtb.img
+
+
 # Kernel cmdline
 BOARD_KERNEL_CMDLINE := \
     bootopt=64S3,32N2,64N2 \
