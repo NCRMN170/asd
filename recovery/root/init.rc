@@ -1,5 +1,11 @@
 import /init.recovery.${ro.hardware}.rc
-
+import /init.recovery.mt8797.rc
+import init.recovery.mt6893.rc
+import /init.recovery.usb.rc
+import /mtk-plpath-utils.rc
+import /init.microtrust.rc
+import /snapuserd.rc
+import /ueventd.rc
 on early-init
     # Set the security context of /postinstall if present.
     restorecon /postinstall
