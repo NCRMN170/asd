@@ -1,3 +1,0 @@
-add_lunch_combo twrp_TB132FU-eng
-add_lunch_combo twrp_TB132FU-userdebug
-add_lunch_combo twrp_TB132FU-user
